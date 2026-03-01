@@ -186,15 +186,15 @@ lastOccurence(arr, 2, 0)
                     → return -1
  Unwinding (where actual work happens):
  lastOccurence(arr, 2, 4)
-    returns -1 ⬆️
+    returns -1 
 
 lastOccurence(arr, 2, 3)
     ans = -1
-    arr[3]=2, 2==2? YES → return 3 ⬆️
+    arr[3]=2, 2==2? YES → return 3 
 
 lastOccurence(arr, 2, 2)
     ans = 3
-    arr[2]=4, 4==2? NO → return ans(3) ⬆️
+    arr[2]=4, 4==2? NO → return ans(3) 
 
 lastOccurence(arr, 2, 1)
     ans = 3
@@ -245,13 +245,13 @@ optimizepow(2, 4)
                 |
                 └──► optimizepow(2, 0)
                         |
-                        |  n=0 ✅ BASE CASE
+                        |  n=0  BASE CASE
                         └──► returns 1
 ```
 
 ---
 
-## PHASE 2: Bubbling UP ⬆️
+## PHASE 2: Bubbling UP 
 ```
 optimizepow(2, 0)
 └── returns 1
@@ -275,7 +275,7 @@ optimizepow(2, 4)
 ├── halfsq     = 4
 ├── halfpowsq  = 4 * 4 = 16
 ├── n=4, EVEN → no extra multiply
-└── returns 16 ✅
+└── returns 16 
 ```
 
 ---
@@ -293,10 +293,216 @@ When n is odd, `n/2` in integer division **loses** one, so we manually **compens
 
 ---
 
-## Normal vs Optimized 🚀
+## Normal vs Optimized 
 ```
 Normal power(2,8):
-calls → n=8,7,6,5,4,3,2,1,0  =  9 calls 😐
+calls → n=8,7,6,5,4,3,2,1,0  =  9 calls 
 
 optimizepow(2,8):
-calls → n=8,4,2,1,0           =  5 calls 🚀
+calls → n=8,4,2,1,0           =  5 calls 
+
+
+LEVEL 2 PROBLEMS 
+problem 1:
+Tiling problem
+     if(n==0||n==1){
+            return 1;
+        }
+        int fnm1=tilingproblem(n-1);
+        int fnm2=tilingproblem(n-2);
+        int totalways=fnm1+fnm2;
+        return totalways; 
+      
+   dry run for 2X5
+   tilingproblem(4) called
+│
+│  "I need tilingproblem(3) first for fnm1"
+│
+└──► tilingproblem(3) called
+        │
+        │  "I need tilingproblem(2) first for fnm1"
+        │
+        └──► tilingproblem(2) called
+                │
+                │  "I need tilingproblem(1) first for fnm1"
+                │
+                ├──► tilingproblem(1) → returns 1  (base case)
+                │    fnm1 = 1  
+                │
+                │  "now I need tilingproblem(0) for fnm2"
+                │
+                ├──► tilingproblem(0) → returns 1  (base case)
+                │    fnm2 = 1  
+                │
+                └── total = 1+1 = 2, returns 2
+                Back in tilingproblem(3):
+tilingproblem(3)
+│
+│  fnm1 = 2    (got it from tilingproblem(2))
+│
+│  "now I need tilingproblem(1) for fnm2"
+│
+├──► tilingproblem(1) → returns 1 (base case)
+│    fnm2 = 1  
+│
+└── total = 2+1 = 3, returns 3
+
+Back in tilingproblem(4):
+tilingproblem(4)
+│
+│  fnm1 = 3    (got it from tilingproblem(3))
+│
+│  "now I need tilingproblem(2) for fnm2"
+│
+├──► tilingproblem(2) → returns 2
+│    fnm2 = 2  
+│
+└── total = 3+2 = 5, returns 5 
+
+Key thing to understand:
+FIRST  → fnm1 call goes all the way down and fully completes
+THEN   → fnm2 call starts
+THEN   → both are added
+So it's never parallel — always one after the other!
+fnm1 fully done 
+        +
+fnm2 fully done 
+        =
+     returned! 
+
+
+
+ Problem 2:REMOVE DUPLICATES IN A STRING
+      if(idx==str.length()){
+            System.out.println(newstr);
+            return;
+        }
+        char currChar=str.charAt(idx);
+        if(map[currChar-'a']==true){
+            removeDuplicates(str,idx+1,newstr,map);
+
+        }else{
+            map[currChar-'a']=true;
+            removeDuplicates(str,idx+1,newstr.append(currChar),map);
+        }
+    } dry run for aapna college
+    idx=0, currChar='a', map['a']=false
+├── map['a'] = true
+├── newstr = "a"
+└── recurse(idx=1)
+
+idx=1, currChar='a', map['a']=true
+├── already seen! SKIP
+└── recurse(idx=2)
+
+idx=2, currChar='p', map['p']=false
+├── map['p'] = true
+├── newstr = "ap"
+└── recurse(idx=3)
+
+idx=3, currChar='p', map['p']=true
+├── already seen! SKIP
+└── recurse(idx=4)
+
+idx=4, currChar='n', map['n']=false
+├── map['n'] = true
+├── newstr = "apn"
+└── recurse(idx=5)
+
+idx=5, currChar='a', map['a']=true
+├── already seen! SKIP
+└── recurse(idx=6)
+
+idx=6, currChar=' ', map[' '-'a']=false
+├── map[' '] = true
+├── newstr = "apn "
+└── recurse(idx=7)
+
+idx=7, currChar='c', map['c']=false
+├── map['c'] = true
+├── newstr = "apn c"
+└── recurse(idx=8)
+
+idx=8, currChar='o', map['o']=false
+├── map['o'] = true
+├── newstr = "apn co"
+└── recurse(idx=9)
+
+idx=9, currChar='l', map['l']=false
+├── map['l'] = true
+├── newstr = "apn col"
+└── recurse(idx=10)
+
+idx=10, currChar='l', map['l']=true
+├── already seen! SKIP
+└── recurse(idx=11)
+
+idx=11, currChar='e', map['e']=false
+├── map['e'] = true
+├── newstr = "apn cole"
+└── recurse(idx=12)
+
+idx=12, currChar='g', map['g']=false
+├── map['g'] = true
+├── newstr = "apn coleg"
+└── recurse(idx=13)
+
+idx=13, currChar='e', map['e']=true
+├── already seen! SKIP
+└── recurse(idx=14)
+
+idx=14 == str.length()  
+└── print "apn coleg"
+    
+
+
+    problem 3:Freinds pairing
+           if(n==1||n==2){
+        return n;
+       }
+       int fnm1=freindspairing(n-1);
+       int fnm2=freindspairing(n-2);
+       int pairways=(n-1)*fnm2;
+       return pairways;
+
+ 
+    dry run
+    CASe 1: C is single 
+    C is single, so now problem reduces to
+"how many ways can A and B arrange?"
+         ↓
+friendspairing(n-1) = friendspairing(2) = 2 ways
+
+those 2 ways are:
+├── A single, B single  →  {A}  {B}  {C}
+└── A pairs with B      →  {A,B}  {C} 
+
+
+CASE 2:C can pair with someone
+C can pair with:
+├── A  →  1 choice
+└── B  →  1 choice
+
+total (n-1) = 2 choices
+
+for EACH choice, remaining 1 person is alone
+so friendspairing(n-2) = friendspairing(1) = 1 way
+
+pairways = (n-1) * fnm2
+         =   2   *  1  = 2 ways
+
+those 2 ways are:
+├── C pairs with A  →  {C,A}  {B}
+└── C pairs with B  →  {C,B}  {A}
+
+Add both cases:
+C single  →  2 ways
+C paired  →  2 ways
+              ───
+total     =  4 ways ✅
+
+
+{A}  {B}  {C}
+{A,B}  {C}
+{A,C}  {B}
+{B,C}  {A}
