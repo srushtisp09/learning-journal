@@ -506,3 +506,77 @@ total     =  4 ways ✅
 {A,B}  {C}
 {A,C}  {B}
 {B,C}  {A}
+
+
+problem 4:For a given integer array of size N.You have to find all the occurrences(indices) of a given element(Key) and print them. 
+//BASE CASE
+  if(idx==arr.length){
+    //         return ; 
+    //     }
+    //     if(arr[idx]==key){
+    //         System.out.print(idx);
+    //     }
+    //     occurences(arr, key, idx+1);
+    // 
+    problem 5:You are given a number (eg -  2019), convert it into a String of english like“two zero one nine
+    static String digits[]={"zero","one","two","three","four","five","six","seven","eight","nine"};
+    public static void String(int n){
+        if(n==0){
+            return ;
+        }
+       int lastdigit=n%10;
+       String(n/10);
+      System.out.println(digits[lastdigit]+" ");
+    }
+
+     problem 6:Write a program to findLength of aString using Recursion
+     public static int length(string str){
+        if(str.length()==0){
+            return 0;
+        }
+        return length(str.substring(1))+1;
+     }
+     so over here if we are supposed to find the length of "abcde" then
+     length("abcde")  → waiting...
+  length("bcde")   → waiting...
+    length("cde")    → waiting...
+      length("de")     → waiting...
+        length("e")      → waiting...
+          length("")       → returns 0  ✅ BASE CASE
+
+Now everyone gets their answer:
+        length("e")      → got 0,  returns 0+1 = 1
+      length("de")     → got 1,  returns 1+1 = 2
+    length("cde")    → got 2,  returns 2+1 = 3
+  length("bcde")   → got 3,  returns 3+1 = 4
+length("abcde")  → got 4,  returns 4+1 = 5 ✅
+   
+
+length("e") was waiting for length("") to return 0
+Then it took that 0 and added +1 to it
+So length("e") returns 1 not 0 ! 
+
+
+---We also have another code that is written using tracking variables------
+
+problem 7:We are  given a stringS,we need to find the count of all contiguous substrings starting and ending with the same character.
+code:
+public static  int count(String s){
+    if(s.length()==0){
+        return 0;
+    }
+    int countCurr=0;
+    for(int i=0;i<s.length();i++){
+        if(s.charAt(0)==s.charAt(i)){
+        countCurr++;
+        }
+    }
+    return countCurr +count(s.substring(1));
+    count("abcab")  → counts substrings starting with 'a'
+count("bcab")   → counts substrings starting with 'b'
+count("cab")    → counts substrings starting with 'c'
+count("ab")     → counts substrings starting with 'a'
+count("b")      → counts substrings starting with 'b'
+
+
+problem 8:Tower of hanoi(important)
