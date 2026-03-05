@@ -580,3 +580,140 @@ count("b")      → counts substrings starting with 'b'
 
 
 problem 8:Tower of hanoi(important)
+code
+ public class toh{
+     public static void toh(int n, String src, String dest, String helper) {
+    if (n == 1) {
+        System.out.println("Move disk 1 from " + src + " to " + dest);
+        return;
+    }
+    toh(n-1, src, helper, dest);   // move top n-1 disks: src → helper
+    System.out.println("Move disk " + n + " from " + src + " to " + dest);
+    toh(n-1, helper, dest, src);   // move n-1 disks: helper → dest
+}
+public static void main(String args[]){
+    toh(3,"S","D","H");
+}
+ }
+ explanation:
+
+ 
+problem 9: Binary string 
+if(n==0){
+    System.out.println(str);
+    return;
+}
+ binaryString(n-1,0,str+"0");
+ if(lastplace==0){
+    binaryString(n-1,1,str+"1"); 
+ } 
+
+ explanation:
+ ## Binary String (No Consecutive 1s)
+
+### Problem
+Generate all binary strings of length n where no two consecutive 1s appear.
+
+### Key Idea
+At every position we have 2 choices:
+- Place "0" → always allowed
+- Place "1" → only allowed if lastplace was 0
+
+### Parameters
+```
+n         → how many digits are still left to place
+lastplace → what digit was placed just before this call
+str       → the string built so far
+```
+
+### Code
+```java
+public static void binarystring(int n, int lastplace, String str){
+    if(n==0){
+        System.out.println(str);
+        return;
+    }
+    binarystring(n-1, 0, str+"0");   // place "0", always allowed
+    if(lastplace==0){
+        binarystring(n-1, 1, str+"1"); // place "1", only if lastplace=0
+    }
+}
+```
+
+### How to Call
+```java
+binarystring(3, 0, "");
+// lastplace=0 at start because nothing placed yet
+// both digits allowed at beginning
+```
+
+### The Golden Rule
+```
+lastplace=0 → BOTH calls run (can place 0 or 1)
+lastplace=1 → ONLY first call runs (can only place 0)
+```
+
+### Why n-1?
+n represents how many digits are LEFT to place.
+Every time we place a digit, remaining count decreases by 1.
+When n=0 → string is complete → print it!
+
+### Dry Run (n=3)
+```
+binarystring(3, 0, "")
+│
+├── place "0" → binarystring(2, 0, "0")
+│               │
+│               ├── place "0" → binarystring(1, 0, "00")
+│               │               │
+│               │               ├── place "0" → binarystring(0, 0, "000")
+│               │               │               PRINT "000" ✅
+│               │               │
+│               │               └── lastplace=0 → place "1" → binarystring(0, 1, "001")
+│               │                                              PRINT "001" ✅
+│               │
+│               └── lastplace=0 → place "1" → binarystring(1, 1, "01")
+│                                              │
+│                                              ├── place "0" → binarystring(0, 0, "010")
+│                                              │               PRINT "010" ✅
+│                                              │
+│                                              └── lastplace=1 → SKIP "1" ❌
+│
+└── lastplace=0 → place "1" → binarystring(2, 1, "1")
+                               │
+                               ├── place "0" → binarystring(1, 0, "10")
+                               │               │
+                               │               ├── place "0" → binarystring(0, 0, "100")
+                               │               │               PRINT "100" ✅
+                               │               │
+                               │               └── lastplace=0 → place "1" → binarystring(0, 1, "101")
+                               │                                              PRINT "101" ✅
+                               │
+                               └── lastplace=1 → SKIP "1" ❌
+```
+
+### Output
+```
+000
+001
+010
+100
+101
+```
+
+### Most Important Observations
+```
+1. First call (place "0") ALWAYS runs — no condition on it
+2. if(lastplace==0) check happens AFTER first call fully returns
+3. Every call must fully complete before next line executes
+4. lastplace=0 at start = no restriction at beginning
+5. "011", "110", "111" are missing — correctly blocked by if check
+```
+
+### Type of Recursion
+TREE RECURSION — two recursive calls at every level
+
+### Key Takeaway
+The if(lastplace==0) condition is the HEART of this problem.
+It is the single line that prevents all consecutive 1s.
+Without it, all 8 binary strings would be printed including invalid ones.
