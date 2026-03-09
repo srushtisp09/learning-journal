@@ -78,3 +78,84 @@ earth
 mars
 mercury
 sun
+It depends on what your function returns
+
+Case 1 — lo == hi (This solution)
+When your function returns something (a new array):
+java// Returns a new array
+public static String[] mergeSort(String[] arr, int lo, int hi) {
+    if (lo == hi) {
+        String[] A = {arr[lo]};
+        return A;               // MUST return something
+    }
+}
+Case 2 — start >= end (Classic way)
+When your function is void (sorts in-place, returns nothing):
+java// Returns nothing, modifies original array
+public static void mergeSort(int[] arr, int start, int end) {
+    if (start >= end) return;   // just stop, no need to return value
+}
+```
+> `>=` is used as a **safety guard** in case somehow start overshoots end.
+
+---
+
+### Simple Rule to Remember:
+```
+Function returns new array?  → use lo == hi
+Function is void (in-place)? → use start >= end
+
+ 
+Both work in both cases. The real difference is just:
+lo == histart >= endChecksexactly 1 element1 or 0 elementsSafer?less safemore safe (extra guard)Used whenreturn type functionvoid function
+
+start >= end is just a safer, more defensive way of writing it — that's why most people prefer it!
+
+Phase 1 — SPLIT till single elements
+{"sun","earth","mars","mercury"}
+        ↓
+["sun"] ["earth"] ["mars"] ["mercury"]
+
+Phase 2 — MERGE back in sorted order
+["earth","sun"] ["mars","mercury"]
+        ↓
+["earth","mars","mercury","sun"]
+
+
+1. What is Merge Sort?
+   → Divide & Conquer, splits array and merges back
+
+2. Base case — why lo == hi?
+   → Single element = already sorted
+
+3. What does merge() do?
+   → Combines two sorted arrays into one sorted array
+
+4. compareTo() logic
+   → negative = first string is smaller
+
+5. Time & Space complexity
+   → O(n log n) time, O(n) space
+
+
+
+   How compareTo() Works
+
+Simple Definition:
+
+It goes character by character from left to right and subtracts ASCII values at the first difference it finds
+"sun".compareTo("earth")
+
+s vs e
+115 - 101 = +14  → positive → "sun" comes AFTER "earth"
+
+
+--------TIPS AND TRICK---------
+When to use Recursion:
+✅ Divide & Conquer problems (Merge Sort, Quick Sort)
+✅ Tree problems
+✅ When problem naturally breaks into subproblems
+When NOT to use Recursion:
+❌ Simple array problems (just use a loop!)
+❌ When space matters (recursion uses stack space)
+❌ When iterative solution is simpler
