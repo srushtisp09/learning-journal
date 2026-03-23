@@ -55,3 +55,9 @@ returns 5 ✅
 
 /// Key Takeaway: Trust the recursion, define the base case, 
 and let unwinding do the rest ///
+ key point to remeber:Yes, recursion does use O(n) space because of the call stack. Every recursive call gets added to the stack, and if you recurse n levels deep, that's O(n) space even if you're not explicitly creating any data structure.
+So the rule becomes:
+
+Iterative two-pointer → O(1) space
+Recursive solution → at least O(n) space (call stack depth)
+
